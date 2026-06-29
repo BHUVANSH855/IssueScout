@@ -1,15 +1,29 @@
-from fastapi import APIRouter
-
+from fastapi import (
+    APIRouter,
+    Depends,
+)
 from issuescout.services.issue_service import IssueService
 from issuescout.services.repository_service import RepositoryService
 from issuescout.scanner.engine import ScannerEngine
 
 router = APIRouter()
+def get_repository_service() -> RepositoryService:
+    return RepositoryService()
 
+
+def get_issue_service() -> IssueService:
+    return IssueService()
+
+
+def get_scanner_engine() -> ScannerEngine:
+    return ScannerEngine()
 
 @router.get("/github")
-async def github():
-    service = RepositoryService()
+async def github(
+    service: RepositoryService = Depends(
+        get_repository_service,
+    ),
+):
 
     repo = await service.get_repository(
         "python",
@@ -29,8 +43,11 @@ async def github():
 
 
 @router.get("/issues")
-async def issues():
-    service = IssueService()
+async def issues(
+    service: IssueService = Depends(
+        get_issue_service,
+    ),
+):
 
     issues = await service.list_open_issues(
         "python",
@@ -56,7 +73,9 @@ async def issues():
 async def scan_repository(
     owner: str,
     repo: str,
+    engine: ScannerEngine = Depends(
+        get_scanner_engine,
+    ),
 ):
-    engine = ScannerEngine()
 
     return await engine.scan_repository(owner, repo)

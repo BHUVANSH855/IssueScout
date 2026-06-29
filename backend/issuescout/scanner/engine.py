@@ -17,49 +17,58 @@ from issuescout.scanner.detectors import (
 from issuescout.scanner.confidence import ConfidenceCalculator
 
 class ScannerEngine:
-    async def scan_repository(
+    def __init__(
         self,
-        owner: str,
-        repo: str,
-    ) -> ScanResult:
+        fetcher: Fetcher | None = None,
+        detector: GitHubLinkedPRDetector | None = None,
+        pipeline: AnalysisPipeline | None = None,
+        confidence: ConfidenceCalculator | None = None,
+    ):
+        self.fetcher = fetcher or Fetcher()
 
-        fetcher = Fetcher()
+        self.detector = detector or GitHubLinkedPRDetector()
 
-        context = await fetcher.fetch_context(
-            owner,
-            repo,
-        )
-
-        await fetcher.close()
-
-        issues = context.issues
-
-        detector = GitHubLinkedPRDetector()
-
-        for issue in issues:
-            context.linked_pr_cache[issue.number] = (
-                await detector.find_linked_pr(
-                    context,
-                    issue.number,
-                )
-            )
-        
-        await detector.close()
-
-        pipeline = AnalysisPipeline(
+        self.pipeline = pipeline or AnalysisPipeline(
             [
                 AssignmentAnalyzer(),
                 LinkedPRAnalyzer(),
             ]
         )
 
-        confidence = ConfidenceCalculator()
+        self.confidence = confidence or ConfidenceCalculator()
+
+    async def scan_repository(
+        self,
+        owner: str,
+        repo: str,
+    ) -> ScanResult:
+
+        try:
+            context = await self.fetcher.fetch_context(
+                owner,
+                repo,
+            )
+        finally:
+            await self.fetcher.close()
+
+        issues = context.issues
+
+        try:
+            for issue in issues:
+                context.linked_pr_cache[issue.number] = (
+                    await self.detector.find_linked_pr(
+                        context,
+                        issue.number,
+                    )
+                )
+        finally:
+            await self.detector.close()
 
         summaries = []
 
         for issue in issues:
 
-            results = await pipeline.run(
+            results = await self.pipeline.run(
                 context,
                 issue,
             )
@@ -77,7 +86,7 @@ class ScannerEngine:
                     title=issue.title,
                     assigned=issue.assigned,
                     assignee=issue.assignee,
-                    confidence=confidence.calculate(
+                    confidence=self.confidence.calculate(
                         results,
                     ),
                     linked_pr_number=(

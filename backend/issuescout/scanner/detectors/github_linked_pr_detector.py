@@ -17,10 +17,12 @@ from issuescout.evidence import (
 
 from issuescout.scanner.relation import (
     RelationEngine,
+)
+
+from issuescout.scanner.relation.registry import (
     default_analyzers,
 )
 
-from issuescout.output import explain_prediction
 from issuescout.presentation import (
     ConsoleReporter,
 )
@@ -31,17 +33,36 @@ class GitHubLinkedPRDetector(LinkedPRDetector):
     already-fetched RepositoryScanContext.
     """
 
-    def __init__(self):
-        self.evidence_collector = EvidenceCollector()
-
-        self.relation_engine = RelationEngine(
-            default_analyzers(),
+    def __init__(
+        self,
+        evidence_collector: EvidenceCollector | None = None,
+        prediction_service: PredictionService | None = None,
+        console_reporter: ConsoleReporter | None = None,
+        relation_engine: RelationEngine | None = None,
+    ):
+        self.evidence_collector = (
+            evidence_collector
+            or EvidenceCollector()
         )
 
-        self.prediction_service = PredictionService(
-            self.relation_engine,
+        self.relation_engine = (
+            relation_engine
+            or RelationEngine(
+                default_analyzers(),
+            )
         )
-        self.console_reporter = ConsoleReporter()
+
+        self.prediction_service = (
+            prediction_service
+            or PredictionService(
+                self.relation_engine,
+            )
+        )
+
+        self.console_reporter = (
+            console_reporter
+            or ConsoleReporter()
+        )
 
     async def find_linked_pr(
         self,
