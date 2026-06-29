@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "issuescout"
+version = "0.1.0"
+description = "GitHub issue and pull request relation detection engine"
+readme = "README.md"
+requires-python = ">=3.12"
+
+dependencies = [
+    "fastapi",
+    "httpx",
+    "pydantic",
+    "pydantic-settings",
+    "uvicorn",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "anyio",
+]
+
+[tool.setuptools]
+packages = ["issuescout"]
