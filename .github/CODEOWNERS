@@ -1,0 +1,20 @@
+# Default code owner
+
+* @BHUVANSH855
+
+# GitHub Workflows
+
+.github/workflows/ @BHUVANSH855
+
+# Backend
+
+/backend/ @BHUVANSH855
+
+# Documentation
+
+*.md @BHUVANSH855
+/docs/ @BHUVANSH855
+
+# GitHub configuration
+
+.github/ @BHUVANSH855
