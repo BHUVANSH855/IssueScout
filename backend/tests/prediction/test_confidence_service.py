@@ -1,5 +1,3 @@
-import pytest
-
 from issuescout.models.analysis import (
     RelationPrediction,
 )

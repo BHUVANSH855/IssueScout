@@ -1,5 +1,3 @@
-import pytest
-
 from issuescout.utils.text_similarity import (
     similarity_percentage,
 )

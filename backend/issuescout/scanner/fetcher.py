@@ -10,9 +10,6 @@ from issuescout.services.repository_service import RepositoryService
 from issuescout.utils.issue_file_parser import (
     extract_file_mentions,
 )
-from issuescout.utils.issue_reference_parser import (
-    extract_issue_references,
-)
 from issuescout.services.review_service import (
     ReviewService,
 )
