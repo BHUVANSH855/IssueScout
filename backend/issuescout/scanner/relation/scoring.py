@@ -17,8 +17,4 @@ class ScoringPolicy:
         if confidence <= 0:
             return 0
 
-        return round(
-            metadata.weight
-            * confidence
-            / 100
-        )
+        return round(metadata.weight * confidence / 100)

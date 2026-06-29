@@ -16,6 +16,7 @@ from issuescout.scanner.detectors import (
 )
 from issuescout.scanner.confidence import ConfidenceCalculator
 
+
 class ScannerEngine:
     def __init__(
         self,
@@ -55,11 +56,11 @@ class ScannerEngine:
 
         try:
             for issue in issues:
-                context.linked_pr_cache[issue.number] = (
-                    await self.detector.find_linked_pr(
-                        context,
-                        issue.number,
-                    )
+                context.linked_pr_cache[
+                    issue.number
+                ] = await self.detector.find_linked_pr(
+                    context,
+                    issue.number,
                 )
         finally:
             await self.detector.close()
@@ -67,7 +68,6 @@ class ScannerEngine:
         summaries = []
 
         for issue in issues:
-
             results = await self.pipeline.run(
                 context,
                 issue,
@@ -79,7 +79,7 @@ class ScannerEngine:
             linked_pr = context.linked_pr_cache.get(
                 issue.number,
             )
-            
+
             summaries.append(
                 IssueSummary(
                     number=issue.number,
@@ -90,14 +90,10 @@ class ScannerEngine:
                         results,
                     ),
                     linked_pr_number=(
-                        linked_pr.number
-                        if linked_pr is not None
-                        else None
+                        linked_pr.number if linked_pr is not None else None
                     ),
                     linked_pr_title=(
-                        linked_pr.title
-                        if linked_pr is not None
-                        else None
+                        linked_pr.title if linked_pr is not None else None
                     ),
                 )
             )

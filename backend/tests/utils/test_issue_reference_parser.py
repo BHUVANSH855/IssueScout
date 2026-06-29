@@ -5,9 +5,7 @@ from issuescout.utils.issue_reference_parser import (
 
 def test_closes_keyword():
 
-    refs = extract_issue_references(
-        "Closes #123"
-    )
+    refs = extract_issue_references("Closes #123")
 
     assert refs == {123}
 
@@ -43,18 +41,14 @@ def test_duplicate_references():
 
 def test_no_reference():
 
-    refs = extract_issue_references(
-        "Improve documentation"
-    )
+    refs = extract_issue_references("Improve documentation")
 
     assert refs == set()
 
 
 def test_multiple_same_line():
 
-    refs = extract_issue_references(
-        "Fixes #1, closes #2, resolves #3"
-    )
+    refs = extract_issue_references("Fixes #1, closes #2, resolves #3")
 
     assert refs == {
         1,
@@ -65,17 +59,13 @@ def test_multiple_same_line():
 
 def test_github_issue_url():
 
-    refs = extract_issue_references(
-        "https://github.com/python/cpython/issues/12345"
-    )
+    refs = extract_issue_references("https://github.com/python/cpython/issues/12345")
 
     assert 12345 in refs
 
 
 def test_cross_repository_reference():
 
-    refs = extract_issue_references(
-        "Fixes python/cpython#9876"
-    )
+    refs = extract_issue_references("Fixes python/cpython#9876")
 
     assert 9876 in refs

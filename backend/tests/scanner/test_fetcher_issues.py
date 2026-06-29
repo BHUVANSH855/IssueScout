@@ -11,7 +11,6 @@ async def test_fetch_open_issues_empty():
     with patch(
         "issuescout.scanner.fetcher.IssueService",
     ) as MockIssueService:
-
         service = MockIssueService.return_value
 
         service.list_open_issues = AsyncMock(
@@ -50,7 +49,6 @@ async def test_fetch_open_issues_maps_basic_fields():
     with patch(
         "issuescout.scanner.fetcher.IssueService",
     ) as MockIssueService:
-
         service = MockIssueService.return_value
 
         service.list_open_issues = AsyncMock(
@@ -98,7 +96,6 @@ async def test_assigned_issue():
     with patch(
         "issuescout.scanner.fetcher.IssueService",
     ) as MockIssueService:
-
         service = MockIssueService.return_value
 
         service.list_open_issues = AsyncMock(
@@ -142,7 +139,6 @@ async def test_unassigned_issue():
     with patch(
         "issuescout.scanner.fetcher.IssueService",
     ) as MockIssueService:
-
         service = MockIssueService.return_value
 
         service.list_open_issues = AsyncMock(
@@ -193,7 +189,6 @@ async def test_labels_are_converted_to_set():
     with patch(
         "issuescout.scanner.fetcher.IssueService",
     ) as MockIssueService:
-
         service = MockIssueService.return_value
 
         service.list_open_issues = AsyncMock(
@@ -241,7 +236,6 @@ async def test_milestone_is_mapped():
     with patch(
         "issuescout.scanner.fetcher.IssueService",
     ) as MockIssueService:
-
         service = MockIssueService.return_value
 
         service.list_open_issues = AsyncMock(
@@ -284,7 +278,6 @@ async def test_file_mentions_are_extracted():
     with patch(
         "issuescout.scanner.fetcher.IssueService",
     ) as MockIssueService:
-
         service = MockIssueService.return_value
 
         service.list_open_issues = AsyncMock(
@@ -312,7 +305,6 @@ async def test_multiple_issues_are_returned():
     github_issues = []
 
     for number in range(5):
-
         github_issues.append(
             {
                 "number": number,
@@ -334,7 +326,6 @@ async def test_multiple_issues_are_returned():
     with patch(
         "issuescout.scanner.fetcher.IssueService",
     ) as MockIssueService:
-
         service = MockIssueService.return_value
 
         service.list_open_issues = AsyncMock(

@@ -18,19 +18,13 @@ class ConfidenceService:
         strong = sum(
             1
             for result in prediction.results
-            if (
-                result.score > 0
-                and result.evidence_type == "strong"
-            )
+            if (result.score > 0 and result.evidence_type == "strong")
         )
 
         supporting = sum(
             1
             for result in prediction.results
-            if (
-                result.score > 0
-                and result.evidence_type == "supporting"
-            )
+            if (result.score > 0 and result.evidence_type == "supporting")
         )
 
         if strong >= 2:

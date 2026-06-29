@@ -90,8 +90,4 @@ async def test_partial_similarity_scores_between_exact_and_unrelated():
         unrelated,
     )
 
-    assert (
-        exact_result.score
-        >= partial_result.score
-        >= unrelated_result.score
-    )
+    assert exact_result.score >= partial_result.score >= unrelated_result.score

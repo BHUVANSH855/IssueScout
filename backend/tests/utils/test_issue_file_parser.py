@@ -5,9 +5,7 @@ from issuescout.utils.issue_file_parser import (
 
 def test_python_file():
 
-    files = extract_file_mentions(
-        "See Lib/test/test_json.py"
-    )
+    files = extract_file_mentions("See Lib/test/test_json.py")
 
     assert files == {
         "Lib/test/test_json.py",
@@ -47,18 +45,14 @@ def test_duplicate_files():
 
 def test_no_files():
 
-    files = extract_file_mentions(
-        "This issue has no filenames."
-    )
+    files = extract_file_mentions("This issue has no filenames.")
 
     assert files == set()
 
 
 def test_nested_paths():
 
-    files = extract_file_mentions(
-        "Modules/_io/textio.c"
-    )
+    files = extract_file_mentions("Modules/_io/textio.c")
 
     assert files == {
         "Modules/_io/textio.c",
@@ -67,9 +61,7 @@ def test_nested_paths():
 
 def test_windows_path_not_detected():
 
-    files = extract_file_mentions(
-        r"C:\Users\milan\test.py"
-    )
+    files = extract_file_mentions(r"C:\Users\milan\test.py")
 
     assert files == set()
 

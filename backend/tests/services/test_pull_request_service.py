@@ -14,7 +14,6 @@ async def test_search_issue_references():
     with patch(
         "issuescout.services.pull_request_service.GitHubClient",
     ) as MockClient:
-
         client = MockClient.return_value
 
         client.get = AsyncMock(
@@ -33,9 +32,7 @@ async def test_search_issue_references():
 
         query = 'repo:python/cpython is:pr "123"'
 
-        endpoint = (
-            f"/search/issues?q={quote(query)}"
-        )
+        endpoint = f"/search/issues?q={quote(query)}"
 
         assert result == {
             "items": [],
@@ -52,7 +49,6 @@ async def test_list_open_pull_requests():
     with patch(
         "issuescout.services.pull_request_service.GitHubClient",
     ) as MockClient:
-
         client = MockClient.return_value
 
         client.get = AsyncMock(
@@ -69,9 +65,7 @@ async def test_list_open_pull_requests():
         assert result == []
 
         client.get.assert_awaited_once_with(
-            "/repos/python/cpython/pulls"
-            "?state=open"
-            "&per_page=100",
+            "/repos/python/cpython/pulls?state=open&per_page=100",
         )
 
 
@@ -81,7 +75,6 @@ async def test_get_pull_request_files():
     with patch(
         "issuescout.services.pull_request_service.GitHubClient",
     ) as MockClient:
-
         client = MockClient.return_value
 
         client.get = AsyncMock(
@@ -97,8 +90,7 @@ async def test_get_pull_request_files():
         )
 
         client.get.assert_awaited_once_with(
-            "/repos/python/cpython/pulls/"
-            "25/files?per_page=100",
+            "/repos/python/cpython/pulls/25/files?per_page=100",
         )
 
 
@@ -108,7 +100,6 @@ async def test_get_pull_request_commits():
     with patch(
         "issuescout.services.pull_request_service.GitHubClient",
     ) as MockClient:
-
         client = MockClient.return_value
 
         client.get = AsyncMock(
@@ -124,8 +115,7 @@ async def test_get_pull_request_commits():
         )
 
         client.get.assert_awaited_once_with(
-            "/repos/python/cpython/pulls/"
-            "25/commits?per_page=100",
+            "/repos/python/cpython/pulls/25/commits?per_page=100",
         )
 
 
@@ -135,7 +125,6 @@ async def test_close():
     with patch(
         "issuescout.services.pull_request_service.GitHubClient",
     ) as MockClient:
-
         client = MockClient.return_value
 
         client.close = AsyncMock()

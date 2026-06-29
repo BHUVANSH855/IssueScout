@@ -13,6 +13,7 @@ from tests.helpers.factories import (
     make_issue,
 )
 
+
 def test_constructor_creates_collectors():
 
     collector = EvidenceCollector()

@@ -15,7 +15,6 @@ from tests.helpers.factories import (
 
 
 class FakeRelationEngine:
-
     def __init__(
         self,
         responses,
@@ -28,9 +27,7 @@ class FakeRelationEngine:
         issue,
         pull_request,
     ):
-        response = self.responses[
-            self.calls
-        ]
+        response = self.responses[self.calls]
         self.calls += 1
         return response
 

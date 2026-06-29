@@ -5,8 +5,16 @@ from fastapi import (
 from issuescout.services.issue_service import IssueService
 from issuescout.services.repository_service import RepositoryService
 from issuescout.scanner.engine import ScannerEngine
+from issuescout.models.responses import (
+    IssueResponse,
+    RepositoryResponse,
+)
 
-router = APIRouter()
+router = APIRouter(
+    tags=["GitHub"],
+)
+
+
 def get_repository_service() -> RepositoryService:
     return RepositoryService()
 
@@ -18,7 +26,13 @@ def get_issue_service() -> IssueService:
 def get_scanner_engine() -> ScannerEngine:
     return ScannerEngine()
 
-@router.get("/github")
+
+@router.get(
+    "/github",
+    response_model=RepositoryResponse,
+    summary="Repository Information",
+    description=("Retrieve metadata for the configured GitHub repository."),
+)
 async def github(
     service: RepositoryService = Depends(
         get_repository_service,
@@ -32,17 +46,22 @@ async def github(
 
     await service.close()
 
-    return {
-        "name": repo["name"],
-        "owner": repo["owner"]["login"],
-        "stars": repo["stargazers_count"],
-        "forks": repo["forks_count"],
-        "open_issues": repo["open_issues_count"],
-        "default_branch": repo["default_branch"],
-    }
+    return RepositoryResponse(
+        name=repo["name"],
+        owner=repo["owner"]["login"],
+        stars=repo["stargazers_count"],
+        forks=repo["forks_count"],
+        open_issues=repo["open_issues_count"],
+        default_branch=repo["default_branch"],
+    )
 
 
-@router.get("/issues")
+@router.get(
+    "/issues",
+    response_model=list[IssueResponse],
+    summary="List Open Issues",
+    description=("Retrieve all currently open issues from the configured repository."),
+)
 async def issues(
     service: IssueService = Depends(
         get_issue_service,
@@ -57,19 +76,24 @@ async def issues(
     await service.close()
 
     return [
-        {
-            "number": issue["number"],
-            "title": issue["title"],
-            "assignee": (
-                issue["assignee"]["login"]
-                if issue["assignee"]
-                else None
-            ),
-        }
+        IssueResponse(
+            number=issue["number"],
+            title=issue["title"],
+            assignee=(issue["assignee"]["login"] if issue["assignee"] else None),
+        )
         for issue in issues
     ]
 
-@router.get("/scan/{owner}/{repo}")
+
+@router.get(
+    "/scan/{owner}/{repo}",
+    summary="Scan Repository",
+    description=(
+        "Analyze a GitHub repository and "
+        "predict pull request relationships "
+        "for open issues."
+    ),
+)
 async def scan_repository(
     owner: str,
     repo: str,

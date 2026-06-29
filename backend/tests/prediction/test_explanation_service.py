@@ -145,10 +145,7 @@ def test_build_keeps_result_order():
         prediction,
     )
 
-    assert [
-        item.analyzer
-        for item in explanation
-    ] == [
+    assert [item.analyzer for item in explanation] == [
         "body_reference",
         "title_similarity",
         "label_similarity",

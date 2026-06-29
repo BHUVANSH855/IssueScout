@@ -16,7 +16,6 @@ from tests.helpers.factories import (
 
 
 class FakeAnalyzer:
-
     def __init__(
         self,
         name: str,
@@ -120,10 +119,7 @@ async def test_multiple_analyzers():
         make_issue(),
     )
 
-    assert [
-        result.analyzer
-        for result in results
-    ] == [
+    assert [result.analyzer for result in results] == [
         "one",
         "two",
     ]
@@ -211,10 +207,7 @@ async def test_results_are_returned_in_order():
         make_issue(),
     )
 
-    assert [
-        result.score
-        for result in results
-    ] == [
+    assert [result.score for result in results] == [
         1,
         2,
         3,

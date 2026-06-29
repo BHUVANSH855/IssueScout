@@ -15,8 +15,7 @@ class MetadataSimilarityAnalyzer(RelationAnalyzer):
         name="metadata_similarity",
         weight=10,
         description=(
-            "Compares issue and PR metadata "
-            "such as creation time and author."
+            "Compares issue and PR metadata such as creation time and author."
         ),
     )
 
@@ -30,10 +29,7 @@ class MetadataSimilarityAnalyzer(RelationAnalyzer):
         confidence = 0
         reasons = []
 
-        if (
-            issue.author
-            and issue.author == pull_request.author
-        ):
+        if issue.author and issue.author == pull_request.author:
             score += 5
             confidence += 30
             reasons.append("Same author")
@@ -43,23 +39,16 @@ class MetadataSimilarityAnalyzer(RelationAnalyzer):
             and pull_request.created_at
             and pull_request.created_at >= issue.created_at
         ):
-            delta = (
-                pull_request.created_at
-                - issue.created_at
-            )
+            delta = pull_request.created_at - issue.created_at
 
             if delta <= timedelta(days=7):
                 score += 5
                 confidence += 70
-                reasons.append(
-                    "PR created shortly after issue"
-                )
+                reasons.append("PR created shortly after issue")
             elif delta <= timedelta(days=30):
                 score += 3
                 confidence += 50
-                reasons.append(
-                    "PR created after issue"
-                )
+                reasons.append("PR created after issue")
 
         confidence = min(confidence, 100)
 
@@ -67,9 +56,7 @@ class MetadataSimilarityAnalyzer(RelationAnalyzer):
             analyzer="metadata_similarity",
             score=score,
             confidence=confidence,
-            reason=", ".join(reasons)
-            if reasons
-            else "No metadata match",
+            reason=", ".join(reasons) if reasons else "No metadata match",
             matched_issue_text=issue.title,
             matched_pr_text=pull_request.title,
             details={

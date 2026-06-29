@@ -1,9 +1,7 @@
 import re
 
 
-WINDOWS_PATH_PATTERN = re.compile(
-    r"[A-Za-z]:\\(?:[^\\\s]+\\)*[^\\\s]+"
-)
+WINDOWS_PATH_PATTERN = re.compile(r"[A-Za-z]:\\(?:[^\\\s]+\\)*[^\\\s]+")
 
 FILE_PATTERN = re.compile(
     r"""
@@ -44,7 +42,4 @@ def extract_file_mentions(
         text,
     )
 
-    return {
-        match.group(0)
-        for match in FILE_PATTERN.finditer(text)
-    }
+    return {match.group(0) for match in FILE_PATTERN.finditer(text)}

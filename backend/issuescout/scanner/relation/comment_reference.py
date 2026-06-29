@@ -12,10 +12,7 @@ class CommentReferenceAnalyzer(RelationAnalyzer):
     metadata = AnalyzerMetadata(
         name="comment_reference",
         weight=30,
-        description=(
-            "Detects PR numbers mentioned "
-            "inside issue comments."
-        ),
+        description=("Detects PR numbers mentioned inside issue comments."),
     )
 
     async def analyze(
@@ -24,10 +21,7 @@ class CommentReferenceAnalyzer(RelationAnalyzer):
         pull_request: PullRequest,
     ) -> RelationResult:
 
-        matched = (
-            pull_request.number
-            in issue.comment_pull_requests
-        )
+        matched = pull_request.number in issue.comment_pull_requests
 
         percentage = 100 if matched else 0
 

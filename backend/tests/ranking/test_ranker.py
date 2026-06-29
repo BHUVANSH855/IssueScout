@@ -36,10 +36,7 @@ def test_rank_descending():
         ]
     )
 
-    assert [
-        p.pull_request.number
-        for p in ranked
-    ] == [
+    assert [p.pull_request.number for p in ranked] == [
         2,
         3,
         1,
@@ -66,10 +63,7 @@ def test_best_empty_list():
 
     ranker = Ranker()
 
-    assert (
-        ranker.best([])
-        is None
-    )
+    assert ranker.best([]) is None
 
 
 def test_rank_single_prediction():
@@ -103,10 +97,7 @@ def test_rank_preserves_equal_scores():
         predictions,
     )
 
-    assert [
-        p.pull_request.number
-        for p in ranked
-    ] == [
+    assert [p.pull_request.number for p in ranked] == [
         1,
         2,
         3,

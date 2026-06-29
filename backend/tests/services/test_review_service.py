@@ -13,7 +13,6 @@ async def test_get_reviewers():
     with patch(
         "issuescout.services.review_service.GitHubClient",
     ) as MockClient:
-
         client = MockClient.return_value
 
         client.get = AsyncMock(
@@ -35,9 +34,7 @@ async def test_get_reviewers():
         }
 
         client.get.assert_awaited_once_with(
-            "/repos/python/cpython"
-            "/pulls/123"
-            "/requested_reviewers",
+            "/repos/python/cpython/pulls/123/requested_reviewers",
         )
 
 
@@ -47,7 +44,6 @@ async def test_close():
     with patch(
         "issuescout.services.review_service.GitHubClient",
     ) as MockClient:
-
         client = MockClient.return_value
 
         client.close = AsyncMock()

@@ -24,10 +24,7 @@ def test_empty_results():
 
     calculator = ConfidenceCalculator()
 
-    assert (
-        calculator.calculate([])
-        == 0
-    )
+    assert calculator.calculate([]) == 0
 
 
 def test_single_passed_result():
@@ -41,10 +38,7 @@ def test_single_passed_result():
         ),
     ]
 
-    assert (
-        calculator.calculate(results)
-        == 20
-    )
+    assert calculator.calculate(results) == 20
 
 
 def test_failed_results_are_ignored():
@@ -62,10 +56,7 @@ def test_failed_results_are_ignored():
         ),
     ]
 
-    assert (
-        calculator.calculate(results)
-        == 0
-    )
+    assert calculator.calculate(results) == 0
 
 
 def test_mixed_results():
@@ -87,10 +78,7 @@ def test_mixed_results():
         ),
     ]
 
-    assert (
-        calculator.calculate(results)
-        == 50
-    )
+    assert calculator.calculate(results) == 50
 
 
 def test_multiple_passed_results():
@@ -112,7 +100,4 @@ def test_multiple_passed_results():
         ),
     ]
 
-    assert (
-        calculator.calculate(results)
-        == 50
-    )
+    assert calculator.calculate(results) == 50

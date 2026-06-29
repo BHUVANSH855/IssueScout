@@ -12,10 +12,7 @@ class CommitReferenceAnalyzer(RelationAnalyzer):
     metadata = AnalyzerMetadata(
         name="commit_reference",
         weight=45,
-        description=(
-            "Detects PRs referenced by "
-            "commits associated with an issue."
-        ),
+        description=("Detects PRs referenced by commits associated with an issue."),
     )
 
     async def analyze(
@@ -24,10 +21,7 @@ class CommitReferenceAnalyzer(RelationAnalyzer):
         pull_request: PullRequest,
     ) -> RelationResult:
 
-        matched = (
-            pull_request.number
-            in issue.commit_pull_requests
-        )
+        matched = pull_request.number in issue.commit_pull_requests
 
         percentage = 100 if matched else 0
 
@@ -46,12 +40,8 @@ class CommitReferenceAnalyzer(RelationAnalyzer):
                 else "No commit reference found"
             ),
             evidence_type="strong",
-            matched_issue_text=(
-                f"PR #{pull_request.number}"
-            ),
-            matched_pr_text=", ".join(
-                pull_request.commit_messages
-            ),
+            matched_issue_text=(f"PR #{pull_request.number}"),
+            matched_pr_text=", ".join(pull_request.commit_messages),
             details={
                 "matched": matched,
             },

@@ -2,7 +2,6 @@ from issuescout.models.analysis import PredictionResult
 
 
 class JsonFormatter:
-
     def format(
         self,
         prediction: PredictionResult,

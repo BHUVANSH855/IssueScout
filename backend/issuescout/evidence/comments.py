@@ -13,7 +13,6 @@ from issuescout.services.comment_service import (
 
 
 class CommentEvidenceCollector:
-
     def __init__(self):
         self.comment_service = CommentService()
 
@@ -24,7 +23,6 @@ class CommentEvidenceCollector:
     ) -> PullRequest | None:
 
         for pull_request in context.pull_requests:
-
             if pull_request.number == number:
                 return pull_request
 
@@ -48,13 +46,9 @@ class CommentEvidenceCollector:
 
         issue.comment_pull_requests.clear()
 
-        print(
-            f"Issue #{issue.number}: "
-            f"{len(comments)} comments"
-        )
+        print(f"Issue #{issue.number}: {len(comments)} comments")
 
         for comment in comments:
-
             body = comment.get("body", "")
 
             matches = {
@@ -85,7 +79,6 @@ class CommentEvidenceCollector:
             )
 
             for pr_number in matches:
-
                 cached = self._find_cached_pull_request(
                     context,
                     pr_number,
@@ -98,13 +91,9 @@ class CommentEvidenceCollector:
                     cached.number,
                 )
 
-                print(
-                    f"Comment references "
-                    f"PR #{cached.number}"
-                )
+                print(f"Comment references PR #{cached.number}")
 
             if matches:
-
                 print("=" * 100)
                 print(f"Issue #{issue.number}")
 

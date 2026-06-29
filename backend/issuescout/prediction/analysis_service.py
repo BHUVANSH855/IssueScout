@@ -11,8 +11,8 @@ from issuescout.scanner.relation.weights import (
     STRONG_EVIDENCE_BONUS,
 )
 
-class AnalysisService:
 
+class AnalysisService:
     def __init__(
         self,
         relation_engine: RelationEngine,
@@ -25,28 +25,21 @@ class AnalysisService:
         pull_requests: list[PullRequest],
     ) -> list[RelationPrediction]:
 
-        predictions: list[
-            RelationPrediction
-        ] = []
+        predictions: list[RelationPrediction] = []
 
         for pull_request in pull_requests:
+            score, results = await self.relation_engine.analyze(
+                issue,
+                pull_request,
+            )
 
-            score, results = (
-                await self.relation_engine.analyze(
-                    issue,
-                    pull_request,
-                )
-            )
-            
             strong_evidence = any(
-                result.analyzer
-                in STRONG_EVIDENCE_ANALYZERS
-                for result in results
+                result.analyzer in STRONG_EVIDENCE_ANALYZERS for result in results
             )
-            
+
             if strong_evidence:
                 score += STRONG_EVIDENCE_BONUS
-            
+
             predictions.append(
                 RelationPrediction(
                     pull_request=pull_request,

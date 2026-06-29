@@ -2,7 +2,6 @@ from issuescout.github.client import GitHubClient
 
 
 class CommitHistoryService:
-
     def __init__(self):
         self.client = GitHubClient()
 
@@ -12,18 +11,11 @@ class CommitHistoryService:
         repo: str,
         branch: str,
     ) -> list[str]:
-        endpoint = (
-            f"/repos/{owner}/{repo}/commits"
-            f"?sha={branch}"
-            "&per_page=100"
-        )
+        endpoint = f"/repos/{owner}/{repo}/commits?sha={branch}&per_page=100"
 
         commits = await self.client.get(endpoint)
 
-        return [
-            commit["commit"]["message"]
-            for commit in commits
-        ]
+        return [commit["commit"]["message"] for commit in commits]
 
     async def close(self):
         await self.client.close()

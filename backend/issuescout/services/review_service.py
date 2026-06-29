@@ -2,7 +2,6 @@ from issuescout.github.client import GitHubClient
 
 
 class ReviewService:
-
     def __init__(self):
         self.client = GitHubClient()
 
@@ -14,9 +13,7 @@ class ReviewService:
     ):
 
         return await self.client.get(
-            f"/repos/{owner}/{repo}"
-            f"/pulls/{pull_number}"
-            "/requested_reviewers",
+            f"/repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers",
         )
 
     async def close(self):

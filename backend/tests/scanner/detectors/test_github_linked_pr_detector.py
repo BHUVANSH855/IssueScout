@@ -140,6 +140,7 @@ async def test_returns_none_when_prediction_missing(
 
     reporter.report.assert_not_called()
 
+
 @pytest.mark.anyio
 async def test_close_delegates_to_evidence_collector():
     evidence = AsyncMock()

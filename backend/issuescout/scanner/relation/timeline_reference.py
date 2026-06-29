@@ -12,10 +12,7 @@ class TimelineReferenceAnalyzer(RelationAnalyzer):
     metadata = AnalyzerMetadata(
         name="timeline_reference",
         weight=40,
-        description=(
-            "Timeline referenced "
-            "commit linked to PR."
-        ),
+        description=("Timeline referenced commit linked to PR."),
     )
 
     async def analyze(
@@ -29,8 +26,7 @@ class TimelineReferenceAnalyzer(RelationAnalyzer):
                 issue,
                 "timeline_pull_requests",
             )
-            and pull_request.number
-            in issue.timeline_pull_requests
+            and pull_request.number in issue.timeline_pull_requests
         )
 
         percentage = 100 if matched else 0

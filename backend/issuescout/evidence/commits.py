@@ -5,7 +5,6 @@ from issuescout.models import (
 
 
 class CommitEvidenceCollector:
-
     async def collect(
         self,
         repository: Repository,

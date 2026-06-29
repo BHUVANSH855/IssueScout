@@ -29,9 +29,7 @@ def test_github_endpoint():
         "default_branch": "main",
     }
 
-    app.dependency_overrides[
-        get_repository_service
-    ] = lambda: service
+    app.dependency_overrides[get_repository_service] = lambda: service
 
     client = TestClient(app)
 
@@ -76,9 +74,7 @@ def test_issues_endpoint():
         },
     ]
 
-    app.dependency_overrides[
-        get_issue_service
-    ] = lambda: service
+    app.dependency_overrides[get_issue_service] = lambda: service
 
     client = TestClient(app)
 
@@ -117,9 +113,7 @@ def test_scan_repository_endpoint():
         "total_issues": 5,
     }
 
-    app.dependency_overrides[
-        get_scanner_engine
-    ] = lambda: engine
+    app.dependency_overrides[get_scanner_engine] = lambda: engine
 
     client = TestClient(app)
 

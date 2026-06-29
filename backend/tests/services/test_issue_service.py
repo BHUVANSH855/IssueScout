@@ -13,7 +13,6 @@ async def test_list_open_issues():
     with patch(
         "issuescout.services.issue_service.GitHubClient",
     ) as MockClient:
-
         client = MockClient.return_value
 
         client.get = AsyncMock(
@@ -48,7 +47,6 @@ async def test_close():
     with patch(
         "issuescout.services.issue_service.GitHubClient",
     ) as MockClient:
-
         client = MockClient.return_value
 
         client.close = AsyncMock()

@@ -34,7 +34,6 @@ async def test_build_pull_request_maps_basic_fields():
             "issuescout.scanner.fetcher.CommitHistoryService",
         ) as MockHistoryService,
     ):
-
         pr_service = MockPRService.return_value
         review_service = MockReviewService.return_value
         history_service = MockHistoryService.return_value
@@ -99,7 +98,6 @@ async def test_body_defaults_to_empty_string():
             "issuescout.scanner.fetcher.CommitHistoryService",
         ) as MockHistoryService,
     ):
-
         pr_service = MockPRService.return_value
         review_service = MockReviewService.return_value
         history_service = MockHistoryService.return_value
@@ -153,7 +151,6 @@ async def test_reviewers_are_mapped():
             "issuescout.scanner.fetcher.CommitHistoryService",
         ) as MockHistoryService,
     ):
-
         pr_service = MockPRService.return_value
         review_service = MockReviewService.return_value
         history_service = MockHistoryService.return_value
@@ -222,7 +219,6 @@ async def test_commit_messages_are_mapped():
             "issuescout.scanner.fetcher.CommitHistoryService",
         ) as MockHistoryService,
     ):
-
         pr_service = MockPRService.return_value
         review_service = MockReviewService.return_value
         history_service = MockHistoryService.return_value
@@ -288,7 +284,6 @@ async def test_branch_history_is_mapped():
             "issuescout.scanner.fetcher.CommitHistoryService",
         ) as MockHistoryService,
     ):
-
         pr_service = MockPRService.return_value
         review_service = MockReviewService.return_value
         history_service = MockHistoryService.return_value
@@ -347,7 +342,6 @@ async def test_labels_are_mapped_to_set():
             "issuescout.scanner.fetcher.CommitHistoryService",
         ) as MockHistoryService,
     ):
-
         pr_service = MockPRService.return_value
         review_service = MockReviewService.return_value
         history_service = MockHistoryService.return_value

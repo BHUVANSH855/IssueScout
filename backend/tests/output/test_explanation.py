@@ -89,6 +89,9 @@ def test_returns_empty_list_when_no_positive_results():
         ],
     )
 
-    assert explain_prediction(
-        prediction,
-    ) == []
+    assert (
+        explain_prediction(
+            prediction,
+        )
+        == []
+    )

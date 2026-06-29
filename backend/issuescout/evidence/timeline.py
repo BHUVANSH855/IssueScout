@@ -15,7 +15,6 @@ from issuescout.services.timeline_service import (
 
 
 class TimelineEvidenceCollector:
-
     def __init__(self):
         self.timeline_service = TimelineService()
         self.commit_service = CommitService()
@@ -27,7 +26,6 @@ class TimelineEvidenceCollector:
     ) -> PullRequest | None:
 
         for pull_request in context.pull_requests:
-
             if pull_request.number == number:
                 return pull_request
 
@@ -55,13 +53,9 @@ class TimelineEvidenceCollector:
         issue.timeline_pull_requests.clear()
         issue.commit_pull_requests.clear()
 
-        print(
-            f"Issue #{issue.number}: "
-            f"{len(timeline)} timeline events"
-        )
+        print(f"Issue #{issue.number}: {len(timeline)} timeline events")
 
         for event in timeline:
-
             if event.get("event") != "referenced":
                 continue
 
@@ -74,21 +68,15 @@ class TimelineEvidenceCollector:
             print(f"Issue #{issue.number}")
             print(f"Commit SHA: {sha}")
 
-            pull_requests = (
-                await self.commit_service.get_commit_pull_requests(
-                    repository.owner,
-                    repository.name,
-                    sha,
-                )
+            pull_requests = await self.commit_service.get_commit_pull_requests(
+                repository.owner,
+                repository.name,
+                sha,
             )
 
-            print(
-                f"Associated PRs: "
-                f"{len(pull_requests)}"
-            )
+            print(f"Associated PRs: {len(pull_requests)}")
 
             for pr in pull_requests:
-
                 cached = self._find_cached_pull_request(
                     context,
                     pr["number"],
@@ -115,10 +103,7 @@ class TimelineEvidenceCollector:
                     issue.commit_pull_requests,
                 )
 
-                print(
-                    f"PR #{cached.number}: "
-                    f"{cached.title}"
-                )
+                print(f"PR #{cached.number}: {cached.title}")
 
     async def close(self):
         await self.timeline_service.close()

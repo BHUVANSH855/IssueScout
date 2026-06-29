@@ -2,7 +2,6 @@ from issuescout.models.analysis import PredictionResult
 
 
 class ConsoleReporter:
-
     def report(
         self,
         result: PredictionResult,
@@ -16,41 +15,21 @@ class ConsoleReporter:
         print("Candidate Ranking")
 
         for candidate in result.candidates:
-
-            print(
-                f"PR #{candidate.pull_request.number}"
-                f" -> {candidate.score}"
-            )
+            print(f"PR #{candidate.pull_request.number} -> {candidate.score}")
 
         print("=" * 100)
 
-        print(
-            f"Best candidate: "
-            f"PR #{result.prediction.pull_request.number}"
-        )
+        print(f"Best candidate: PR #{result.prediction.pull_request.number}")
 
-        print(
-            f"Score: "
-            f"{result.prediction.score}"
-        )
+        print(f"Score: {result.prediction.score}")
 
-        print(
-            f"Confidence: "
-            f"{result.confidence}"
-        )
+        print(f"Confidence: {result.confidence}")
 
-        print(
-            "Prediction accepted"
-            if result.accepted
-            else "Prediction rejected"
-        )
+        print("Prediction accepted" if result.accepted else "Prediction rejected")
 
         print()
 
         print("Evidence:")
 
         for evidence in result.evidence:
-
-            print(
-                f"- {evidence.reason}"
-            )
+            print(f"- {evidence.reason}")

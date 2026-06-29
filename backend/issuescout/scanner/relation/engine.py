@@ -7,7 +7,6 @@ from .result import RelationResult
 
 
 class RelationEngine:
-
     def __init__(
         self,
         analyzers,
@@ -46,22 +45,17 @@ class RelationEngine:
         supporting_score = 0
 
         for analyzer in self.analyzers:
-
-            result: RelationResult = (
-                await analyzer.analyze(
-                    issue,
-                    pull_request,
-                )
+            result: RelationResult = await analyzer.analyze(
+                issue,
+                pull_request,
             )
 
             results.append(result)
 
             if result.evidence_type == "strong":
-
                 strong_score += result.score
 
             else:
-
                 supporting_score += result.score
 
         strong_score = min(
@@ -74,10 +68,7 @@ class RelationEngine:
             MAX_SUPPORTING_EVIDENCE_SCORE,
         )
 
-        total_score = (
-            strong_score
-            + supporting_score
-        )
+        total_score = strong_score + supporting_score
 
         results.sort(
             key=lambda result: result.score,

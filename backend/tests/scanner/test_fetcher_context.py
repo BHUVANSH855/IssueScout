@@ -55,7 +55,6 @@ async def test_fetch_context_builds_repository_scan_context():
             AsyncMock(return_value=pull_requests),
         ),
     ):
-
         context = await fetcher.fetch_context(
             "python",
             "cpython",
@@ -102,7 +101,6 @@ async def test_fetch_context_calls_all_fetch_methods():
             AsyncMock(return_value=[]),
         ) as fetch_pulls,
     ):
-
         await fetcher.fetch_context(
             "python",
             "cpython",
@@ -153,7 +151,6 @@ async def test_fetch_context_with_empty_results():
             AsyncMock(return_value=[]),
         ),
     ):
-
         context = await fetcher.fetch_context(
             "python",
             "cpython",

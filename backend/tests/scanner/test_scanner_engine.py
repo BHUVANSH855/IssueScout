@@ -150,6 +150,7 @@ async def test_scan_repository_filters_failed_issue(
 
     confidence.calculate.assert_not_called()
 
+
 @pytest.mark.anyio
 async def test_detector_called_for_each_issue(
     repository,
@@ -317,6 +318,7 @@ async def test_scan_repository_handles_missing_linked_pr(
 
     assert summary.linked_pr_number is None
     assert summary.linked_pr_title is None
+
 
 @pytest.mark.anyio
 async def test_fetcher_closed_after_scan(

@@ -10,14 +10,12 @@ from issuescout.utils.text_similarity import (
     similarity_percentage,
 )
 
+
 class AuthorSimilarityAnalyzer(RelationAnalyzer):
     metadata = AnalyzerMetadata(
         name="author_similarity",
         weight=10,
-        description=(
-            "Compares issue author "
-            "with PR author."
-        ),
+        description=("Compares issue author with PR author."),
     )
 
     async def analyze(
@@ -25,17 +23,17 @@ class AuthorSimilarityAnalyzer(RelationAnalyzer):
         issue: Issue,
         pull_request: PullRequest,
     ) -> RelationResult:
-    
+
         percentage = similarity_percentage(
             issue.author,
             pull_request.author,
         )
-    
+
         score = self.scoring.score(
             self.metadata,
             percentage,
         )
-    
+
         return RelationResult(
             analyzer="author_similarity",
             score=score,

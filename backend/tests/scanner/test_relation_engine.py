@@ -109,27 +109,12 @@ async def test_confidence_levels():
 
     engine = RelationEngine([])
 
-    assert (
-        engine.confidence_level(95)
-        == "Very High"
-    )
+    assert engine.confidence_level(95) == "Very High"
 
-    assert (
-        engine.confidence_level(75)
-        == "High"
-    )
+    assert engine.confidence_level(75) == "High"
 
-    assert (
-        engine.confidence_level(55)
-        == "Medium"
-    )
+    assert engine.confidence_level(55) == "Medium"
 
-    assert (
-        engine.confidence_level(35)
-        == "Low"
-    )
+    assert engine.confidence_level(35) == "Low"
 
-    assert (
-        engine.confidence_level(10)
-        == "Very Low"
-    )
+    assert engine.confidence_level(10) == "Very Low"

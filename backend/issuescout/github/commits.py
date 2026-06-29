@@ -11,17 +11,12 @@ class CommitAPI:
         repo: str,
         sha: str,
     ):
-        endpoint = (
-            f"/repos/{owner}/{repo}"
-            f"/commits/{sha}/pulls"
-        )
+        endpoint = f"/repos/{owner}/{repo}/commits/{sha}/pulls"
 
         return await self.client.get(
             endpoint,
             headers={
-                "Accept": (
-                    "application/vnd.github+json"
-                ),
+                "Accept": ("application/vnd.github+json"),
             },
         )
 

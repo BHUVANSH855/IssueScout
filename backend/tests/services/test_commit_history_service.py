@@ -13,7 +13,6 @@ async def test_list_branch_commits():
     with patch(
         "issuescout.services.commit_history_service.GitHubClient",
     ) as MockClient:
-
         client = MockClient.return_value
 
         client.get = AsyncMock(
@@ -45,9 +44,7 @@ async def test_list_branch_commits():
         ]
 
         client.get.assert_awaited_once_with(
-            "/repos/python/cpython/commits"
-            "?sha=main"
-            "&per_page=100"
+            "/repos/python/cpython/commits?sha=main&per_page=100"
         )
 
 
@@ -57,7 +54,6 @@ async def test_empty_commit_history():
     with patch(
         "issuescout.services.commit_history_service.GitHubClient",
     ) as MockClient:
-
         client = MockClient.return_value
 
         client.get = AsyncMock(
@@ -81,7 +77,6 @@ async def test_close():
     with patch(
         "issuescout.services.commit_history_service.GitHubClient",
     ) as MockClient:
-
         client = MockClient.return_value
 
         client.close = AsyncMock()

@@ -1,9 +1,11 @@
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
-import httpx
 
 from issuescout.github.client import GitHubClient
+from issuescout.core.exceptions import (
+    GitHubNotFoundError,
+)
 
 
 def test_client_uses_default_headers():
@@ -53,8 +55,6 @@ async def test_get_returns_json():
         headers=None,
     )
 
-    response.raise_for_status.assert_called_once()
-
 
 @pytest.mark.anyio
 async def test_get_passes_custom_headers():
@@ -92,19 +92,11 @@ async def test_get_raises_http_error():
     response.status_code = 404
     response.text = "Not Found"
 
-    response.raise_for_status.side_effect = (
-        httpx.HTTPStatusError(
-            "404",
-            request=Mock(),
-            response=Mock(),
-        )
-    )
-
     client.client.get = AsyncMock(
         return_value=response,
     )
 
-    with pytest.raises(httpx.HTTPStatusError):
+    with pytest.raises(GitHubNotFoundError):
         await client.get("/missing")
 
 

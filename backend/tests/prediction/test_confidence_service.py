@@ -47,10 +47,7 @@ def test_very_high_confidence():
 
     service = ConfidenceService()
 
-    assert (
-        service.confidence(prediction)
-        == "Very High"
-    )
+    assert service.confidence(prediction) == "Very High"
 
 
 def test_high_confidence():
@@ -64,10 +61,7 @@ def test_high_confidence():
 
     service = ConfidenceService()
 
-    assert (
-        service.confidence(prediction)
-        == "High"
-    )
+    assert service.confidence(prediction) == "High"
 
 
 def test_medium_confidence():
@@ -83,10 +77,7 @@ def test_medium_confidence():
 
     service = ConfidenceService()
 
-    assert (
-        service.confidence(prediction)
-        == "Medium"
-    )
+    assert service.confidence(prediction) == "Medium"
 
 
 def test_low_confidence():
@@ -100,10 +91,7 @@ def test_low_confidence():
 
     service = ConfidenceService()
 
-    assert (
-        service.confidence(prediction)
-        == "Low"
-    )
+    assert service.confidence(prediction) == "Low"
 
 
 def test_very_low_confidence():
@@ -116,7 +104,4 @@ def test_very_low_confidence():
 
     service = ConfidenceService()
 
-    assert (
-        service.confidence(prediction)
-        == "Very Low"
-    )
+    assert service.confidence(prediction) == "Very Low"

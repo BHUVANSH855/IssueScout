@@ -21,7 +21,6 @@ class ExplanationService:
         explanation = []
 
         for result in prediction.results:
-
             if result.score <= 0:
                 continue
 

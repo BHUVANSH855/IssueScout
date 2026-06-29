@@ -14,10 +14,7 @@ class BranchSimilarityAnalyzer(RelationAnalyzer):
     metadata = AnalyzerMetadata(
         name="branch_similarity",
         weight=20,
-        description=(
-            "Matches issue numbers "
-            "embedded in branch names."
-        ),
+        description=("Matches issue numbers embedded in branch names."),
     )
 
     async def analyze(
@@ -56,9 +53,7 @@ class BranchSimilarityAnalyzer(RelationAnalyzer):
             analyzer="branch_similarity",
             score=score,
             confidence=percentage,
-            reason=(
-                f"Branch similarity: {percentage}%"
-            ),
+            reason=(f"Branch similarity: {percentage}%"),
             evidence_type="strong",
             matched_issue_text=str(issue.number),
             matched_pr_text=pull_request.branch_name,

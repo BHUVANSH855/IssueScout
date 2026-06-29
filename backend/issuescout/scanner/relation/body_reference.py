@@ -12,10 +12,7 @@ class BodyReferenceAnalyzer(RelationAnalyzer):
     metadata = AnalyzerMetadata(
         name="body_reference",
         weight=35,
-        description=(
-            "Detects issue references "
-            "inside the PR description."
-        ),
+        description=("Detects issue references inside the PR description."),
     )
 
     async def analyze(
@@ -24,10 +21,7 @@ class BodyReferenceAnalyzer(RelationAnalyzer):
         pull_request: PullRequest,
     ) -> RelationResult:
 
-        matched = (
-            issue.number
-            in pull_request.related_issues
-        )
+        matched = issue.number in pull_request.related_issues
 
         percentage = 100 if matched else 0
 
@@ -41,9 +35,7 @@ class BodyReferenceAnalyzer(RelationAnalyzer):
             score=score,
             confidence=percentage,
             reason=(
-                "Issue referenced in PR body"
-                if matched
-                else "No issue reference found"
+                "Issue referenced in PR body" if matched else "No issue reference found"
             ),
             evidence_type="strong",
             matched_issue_text=f"#{issue.number}",

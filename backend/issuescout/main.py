@@ -1,13 +1,16 @@
 from fastapi import FastAPI
 
 from issuescout.api.v1.routes import router
+from issuescout.core.exceptions import (
+    register_exception_handlers,
+)
+from issuescout.middleware import (
+    logging_middleware,
+)
 
 app = FastAPI(
     title="IssueScout API",
-    summary=(
-        "GitHub contribution assistant for "
-        "discovering and analyzing issues."
-    ),
+    summary=("GitHub contribution assistant for discovering and analyzing issues."),
     description=(
         "IssueScout analyzes GitHub repositories, issues, "
         "pull requests, commits, comments, and repository "
@@ -22,6 +25,10 @@ app = FastAPI(
     license_info={
         "name": "MIT License",
     },
+)
+register_exception_handlers(app)
+app.middleware("http")(
+    logging_middleware,
 )
 
 

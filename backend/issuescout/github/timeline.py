@@ -11,17 +11,12 @@ class TimelineAPI:
         repo: str,
         issue_number: int,
     ):
-        endpoint = (
-            f"/repos/{owner}/{repo}"
-            f"/issues/{issue_number}/timeline"
-        )
+        endpoint = f"/repos/{owner}/{repo}/issues/{issue_number}/timeline"
 
         return await self.client.get(
             endpoint,
             headers={
-                "Accept": (
-                    "application/vnd.github+json"
-                ),
+                "Accept": ("application/vnd.github+json"),
             },
         )
 

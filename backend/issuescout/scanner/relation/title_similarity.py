@@ -16,10 +16,7 @@ class TitleSimilarityAnalyzer(RelationAnalyzer):
     metadata = AnalyzerMetadata(
         name="title_similarity",
         weight=25,
-        description=(
-            "Compares issue title "
-            "with PR title."
-        ),
+        description=("Compares issue title with PR title."),
     )
 
     async def analyze(

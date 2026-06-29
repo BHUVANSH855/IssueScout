@@ -48,6 +48,9 @@ def test_matches_model_dump():
 
     formatter = JsonFormatter()
 
-    assert formatter.format(
-        prediction,
-    ) == prediction.model_dump()
+    assert (
+        formatter.format(
+            prediction,
+        )
+        == prediction.model_dump()
+    )

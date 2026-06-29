@@ -18,6 +18,7 @@ from .metadata_similarity import (
     MetadataSimilarityAnalyzer,
 )
 
+
 def default_analyzers():
     """
     Return the default analyzer pipeline.

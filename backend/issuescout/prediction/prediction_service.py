@@ -21,8 +21,8 @@ from issuescout.prediction.confidence_service import (
     ConfidenceService,
 )
 
-class PredictionService:
 
+class PredictionService:
     def __init__(
         self,
         relation_engine: RelationEngine,
@@ -52,17 +52,13 @@ class PredictionService:
         return self.ranker.best(
             predictions,
         )
-    
+
     def _evidence(
         self,
         prediction: RelationPrediction,
     ):
 
-        return [
-            result
-            for result in prediction.results
-            if result.score > 0
-        ]
+        return [result for result in prediction.results if result.score > 0]
 
     async def predict(
         self,
@@ -96,24 +92,16 @@ class PredictionService:
 
         result.prediction = best
 
-        result.confidence = (
-            self.confidence_service.confidence(
-                best,
-            )
+        result.confidence = self.confidence_service.confidence(
+            best,
         )
-        
-        result.accepted = (
-            best.score >= DEFAULT_THRESHOLD
-        )
-        
-        result.evidence = self._evidence(
-            best
-        )
-        
-        result.explanation = (
-            self.explanation_service.build(
-                best,
-            )
+
+        result.accepted = best.score >= DEFAULT_THRESHOLD
+
+        result.evidence = self._evidence(best)
+
+        result.explanation = self.explanation_service.build(
+            best,
         )
 
         return result

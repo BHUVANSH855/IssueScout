@@ -11,10 +11,7 @@ class IssueCommentsAPI:
         repo: str,
         issue_number: int,
     ):
-        endpoint = (
-            f"/repos/{owner}/{repo}"
-            f"/issues/{issue_number}/comments"
-        )
+        endpoint = f"/repos/{owner}/{repo}/issues/{issue_number}/comments"
 
         return await self.client.get(endpoint)
 

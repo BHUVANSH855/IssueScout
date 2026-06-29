@@ -12,8 +12,7 @@ def test_app_metadata():
     assert app.version == "0.1.0"
 
     assert app.summary == (
-        "GitHub contribution assistant for "
-        "discovering and analyzing issues."
+        "GitHub contribution assistant for discovering and analyzing issues."
     )
 
     assert app.description == (

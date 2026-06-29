@@ -24,10 +24,7 @@ def test_analyzer_names_are_unique():
 
     analyzers = default_analyzers()
 
-    names = [
-        analyzer.metadata.name
-        for analyzer in analyzers
-    ]
+    names = [analyzer.metadata.name for analyzer in analyzers]
 
     assert len(names) == len(set(names))
 
@@ -36,10 +33,7 @@ def test_pipeline_order():
 
     analyzers = default_analyzers()
 
-    names = [
-        analyzer.metadata.name
-        for analyzer in analyzers
-    ]
+    names = [analyzer.metadata.name for analyzer in analyzers]
 
     assert names == [
         "timeline_reference",
@@ -62,7 +56,4 @@ def test_every_analyzer_enabled():
 
     analyzers = default_analyzers()
 
-    assert all(
-        analyzer.metadata.enabled
-        for analyzer in analyzers
-    )
+    assert all(analyzer.metadata.enabled for analyzer in analyzers)

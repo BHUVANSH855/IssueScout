@@ -32,18 +32,13 @@ class CommitHistorySimilarityAnalyzer(RelationAnalyzer):
         highest_similarity = 0
         best_match = ""
 
-        for message in (
-            pull_request.branch_commit_history
-        ):
+        for message in pull_request.branch_commit_history:
             percentage = similarity_percentage(
                 issue.title,
                 message,
             )
 
-            if (
-                percentage
-                > highest_similarity
-            ):
+            if percentage > highest_similarity:
                 highest_similarity = percentage
                 best_match = message
 
@@ -56,15 +51,10 @@ class CommitHistorySimilarityAnalyzer(RelationAnalyzer):
             analyzer="commit_history_similarity",
             score=score,
             confidence=highest_similarity,
-            reason=(
-                "Commit history similarity: "
-                f"{highest_similarity}%"
-            ),
+            reason=(f"Commit history similarity: {highest_similarity}%"),
             matched_issue_text=issue.title,
             matched_pr_text=best_match,
             details={
-                "similarity": (
-                    f"{highest_similarity}%"
-                ),
+                "similarity": (f"{highest_similarity}%"),
             },
         )

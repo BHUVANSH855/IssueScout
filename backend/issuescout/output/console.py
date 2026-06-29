@@ -2,7 +2,6 @@ from issuescout.models.analysis import PredictionResult
 
 
 class ConsoleFormatter:
-
     def display(
         self,
         prediction: PredictionResult,
@@ -16,39 +15,18 @@ class ConsoleFormatter:
         print("Candidate Ranking")
 
         for candidate in prediction.candidates:
-
-            print(
-                f"PR #{candidate.pull_request.number}"
-                f" -> {candidate.score}"
-            )
+            print(f"PR #{candidate.pull_request.number} -> {candidate.score}")
 
         print("=" * 100)
 
-        print(
-            f"Best candidate: "
-            f"PR #{prediction.prediction.pull_request.number}"
-        )
+        print(f"Best candidate: PR #{prediction.prediction.pull_request.number}")
 
-        print(
-            f"Score: "
-            f"{prediction.prediction.score}"
-        )
+        print(f"Score: {prediction.prediction.score}")
 
-        print(
-            f"Confidence: "
-            f"{prediction.confidence}"
-        )
+        print(f"Confidence: {prediction.confidence}")
 
         if prediction.accepted:
-
-            print(
-                "Prediction accepted "
-                f"(score >= {prediction.threshold})"
-            )
+            print(f"Prediction accepted (score >= {prediction.threshold})")
 
         else:
-
-            print(
-                "Prediction rejected "
-                f"(score below {prediction.threshold})"
-            )
+            print(f"Prediction rejected (score below {prediction.threshold})")

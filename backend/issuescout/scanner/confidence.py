@@ -6,8 +6,4 @@ class ConfidenceCalculator:
         self,
         results: list[AnalysisResult],
     ) -> int:
-        return sum(
-            result.score
-            for result in results
-            if result.passed
-        )
+        return sum(result.score for result in results if result.passed)

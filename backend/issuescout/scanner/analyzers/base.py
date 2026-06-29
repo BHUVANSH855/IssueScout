@@ -13,5 +13,4 @@ class BaseAnalyzer(ABC):
         self,
         context: RepositoryScanContext,
         issue: Issue,
-    ) -> AnalysisResult:
-        ...
+    ) -> AnalysisResult: ...

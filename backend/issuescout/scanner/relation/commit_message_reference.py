@@ -15,10 +15,7 @@ class CommitMessageReferenceAnalyzer(
     metadata = AnalyzerMetadata(
         name="commit_message_reference",
         weight=45,
-        description=(
-            "Detects issue references "
-            "inside PR commit messages."
-        ),
+        description=("Detects issue references inside PR commit messages."),
     )
 
     async def analyze(
@@ -28,15 +25,11 @@ class CommitMessageReferenceAnalyzer(
     ) -> RelationResult:
 
         if issue.number in pull_request.related_issues:
-
             return RelationResult(
                 analyzer="commit_message_reference",
                 score=COMMIT_REFERENCE_SCORE,
                 confidence=100,
-                reason=(
-                    "Issue referenced "
-                    "from commit message."
-                ),
+                reason=("Issue referenced from commit message."),
                 evidence_type="strong",
             )
 
@@ -44,8 +37,5 @@ class CommitMessageReferenceAnalyzer(
             analyzer="commit_message_reference",
             score=0,
             confidence=0,
-            reason=(
-                "No commit message "
-                "reference found."
-            ),
+            reason=("No commit message reference found."),
         )

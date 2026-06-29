@@ -2,7 +2,6 @@ from issuescout.models.analysis import RelationPrediction
 
 
 class Ranker:
-
     def rank(
         self,
         predictions: list[RelationPrediction],

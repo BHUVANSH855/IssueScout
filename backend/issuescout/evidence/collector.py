@@ -13,7 +13,6 @@ from .timeline import (
 
 
 class EvidenceCollector:
-
     def __init__(self):
 
         self.timeline = TimelineEvidenceCollector()
