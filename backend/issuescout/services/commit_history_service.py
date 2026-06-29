@@ -1,4 +1,5 @@
 from issuescout.github.client import GitHubClient
+from issuescout.core.exceptions import GitHubNotFoundError
 
 
 class CommitHistoryService:
@@ -13,7 +14,12 @@ class CommitHistoryService:
     ) -> list[str]:
         endpoint = f"/repos/{owner}/{repo}/commits?sha={branch}&per_page=100"
 
-        commits = await self.client.get(endpoint)
+        try:
+            commits = await self.client.get(endpoint)
+        except GitHubNotFoundError:
+            # Branch no longer exists (force-push, deleted branch, etc.)
+            # This is expected for many open/old pull requests.
+            return []
 
         return [commit["commit"]["message"] for commit in commits]
 
