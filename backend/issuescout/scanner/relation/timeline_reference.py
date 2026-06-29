@@ -2,6 +2,9 @@ from issuescout.models import (
     Issue,
     PullRequest,
 )
+from issuescout.prediction.reason_builder import (
+    ReasonBuilder,
+)
 
 from .base import RelationAnalyzer
 from .metadata import AnalyzerMetadata
@@ -12,7 +15,7 @@ class TimelineReferenceAnalyzer(RelationAnalyzer):
     metadata = AnalyzerMetadata(
         name="timeline_reference",
         weight=40,
-        description=("Timeline referenced commit linked to PR."),
+        description="Detects pull requests referenced from the GitHub issue timeline.",
     )
 
     async def analyze(
@@ -41,14 +44,25 @@ class TimelineReferenceAnalyzer(RelationAnalyzer):
             score=score,
             confidence=percentage,
             reason=(
-                "PR found from issue timeline"
+                ReasonBuilder.timeline_reference(
+                    issue.number,
+                )
                 if matched
-                else "No timeline reference found"
+                else ReasonBuilder.no_match()
             ),
             evidence_type="strong",
-            matched_issue_text=f"PR #{pull_request.number}",
-            matched_pr_text="Issue timeline",
+            matched_issue_text=f"Issue #{issue.number}",
+            matched_pr_text=f"PR #{pull_request.number}",
             details={
                 "matched": matched,
+                "issue_number": issue.number,
+                "pull_request_number": pull_request.number,
+                "timeline_pull_requests": list(
+                    getattr(
+                        issue,
+                        "timeline_pull_requests",
+                        [],
+                    )
+                ),
             },
         )

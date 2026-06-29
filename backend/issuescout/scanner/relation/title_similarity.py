@@ -1,10 +1,12 @@
-from issuescout.utils.text_similarity import (
-    similarity_percentage,
-)
-
 from issuescout.models import (
     Issue,
     PullRequest,
+)
+from issuescout.prediction.reason_builder import (
+    ReasonBuilder,
+)
+from issuescout.utils.text_similarity import (
+    similarity_percentage,
 )
 
 from .base import RelationAnalyzer
@@ -16,7 +18,7 @@ class TitleSimilarityAnalyzer(RelationAnalyzer):
     metadata = AnalyzerMetadata(
         name="title_similarity",
         weight=25,
-        description=("Compares issue title with PR title."),
+        description="Compares issue title with PR title.",
     )
 
     async def analyze(
@@ -39,10 +41,14 @@ class TitleSimilarityAnalyzer(RelationAnalyzer):
             analyzer="title_similarity",
             score=score,
             confidence=percentage,
-            reason=f"Title similarity: {percentage}%",
+            reason=ReasonBuilder.title_similarity(
+                percentage,
+            ),
             matched_issue_text=issue.title,
             matched_pr_text=pull_request.title,
             details={
-                "similarity": f"{percentage}%",
+                "similarity": percentage,
+                "issue_title": issue.title,
+                "pull_request_title": pull_request.title,
             },
         )

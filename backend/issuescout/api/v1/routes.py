@@ -2,13 +2,15 @@ from fastapi import (
     APIRouter,
     Depends,
 )
-from issuescout.services.issue_service import IssueService
-from issuescout.services.repository_service import RepositoryService
-from issuescout.scanner.engine import ScannerEngine
+
+from issuescout.core.config import settings
 from issuescout.models.responses import (
     IssueResponse,
     RepositoryResponse,
 )
+from issuescout.scanner.engine import ScannerEngine
+from issuescout.services.issue_service import IssueService
+from issuescout.services.repository_service import RepositoryService
 
 router = APIRouter(
     tags=["GitHub"],
@@ -38,10 +40,9 @@ async def github(
         get_repository_service,
     ),
 ):
-
     repo = await service.get_repository(
-        "python",
-        "cpython",
+        settings.DEFAULT_OWNER,
+        settings.DEFAULT_REPOSITORY,
     )
 
     await service.close()
@@ -67,10 +68,9 @@ async def issues(
         get_issue_service,
     ),
 ):
-
     issues = await service.list_open_issues(
-        "python",
-        "cpython",
+        settings.DEFAULT_OWNER,
+        settings.DEFAULT_REPOSITORY,
     )
 
     await service.close()
@@ -101,5 +101,4 @@ async def scan_repository(
         get_scanner_engine,
     ),
 ):
-
     return await engine.scan_repository(owner, repo)

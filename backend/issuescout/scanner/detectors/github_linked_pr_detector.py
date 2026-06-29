@@ -59,7 +59,13 @@ class GitHubLinkedPRDetector(LinkedPRDetector):
         issue_number: int,
     ) -> PullRequest | None:
 
-        issue = next(issue for issue in context.issues if issue.number == issue_number)
+        issue = next(
+            (issue for issue in context.issues if issue.number == issue_number),
+            None,
+        )
+
+        if issue is None:
+            return None
 
         await self.evidence_collector.collect(
             context,

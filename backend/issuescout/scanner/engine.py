@@ -1,3 +1,5 @@
+import asyncio
+
 from issuescout.models import (
     IssueSummary,
     ScanResult,
@@ -38,6 +40,21 @@ class ScannerEngine:
 
         self.confidence = confidence or ConfidenceCalculator()
 
+    async def _detect_linked_pr(
+        self,
+        context,
+        issue,
+    ):
+        try:
+            linked_pr = await self.detector.find_linked_pr(
+                context,
+                issue.number,
+            )
+        except Exception:
+            linked_pr = None
+
+        return issue.number, linked_pr
+
     async def scan_repository(
         self,
         owner: str,
@@ -55,13 +72,19 @@ class ScannerEngine:
         issues = context.issues
 
         try:
-            for issue in issues:
-                context.linked_pr_cache[
-                    issue.number
-                ] = await self.detector.find_linked_pr(
-                    context,
-                    issue.number,
-                )
+            results = await asyncio.gather(
+                *[
+                    self._detect_linked_pr(
+                        context,
+                        issue,
+                    )
+                    for issue in issues
+                ]
+            )
+
+            for issue_number, linked_pr in results:
+                context.linked_pr_cache[issue_number] = linked_pr
+
         finally:
             await self.detector.close()
 

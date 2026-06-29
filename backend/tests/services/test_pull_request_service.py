@@ -51,7 +51,7 @@ async def test_list_open_pull_requests():
     ) as MockClient:
         client = MockClient.return_value
 
-        client.get = AsyncMock(
+        client.get_all = AsyncMock(
             return_value=[],
         )
 
@@ -64,8 +64,8 @@ async def test_list_open_pull_requests():
 
         assert result == []
 
-        client.get.assert_awaited_once_with(
-            "/repos/python/cpython/pulls?state=open&per_page=100",
+        client.get_all.assert_awaited_once_with(
+            "/repos/python/cpython/pulls?state=open",
         )
 
 
@@ -77,7 +77,7 @@ async def test_get_pull_request_files():
     ) as MockClient:
         client = MockClient.return_value
 
-        client.get = AsyncMock(
+        client.get_all = AsyncMock(
             return_value=[],
         )
 
@@ -89,8 +89,8 @@ async def test_get_pull_request_files():
             25,
         )
 
-        client.get.assert_awaited_once_with(
-            "/repos/python/cpython/pulls/25/files?per_page=100",
+        client.get_all.assert_awaited_once_with(
+            "/repos/python/cpython/pulls/25/files",
         )
 
 
@@ -102,7 +102,7 @@ async def test_get_pull_request_commits():
     ) as MockClient:
         client = MockClient.return_value
 
-        client.get = AsyncMock(
+        client.get_all = AsyncMock(
             return_value=[],
         )
 
@@ -114,8 +114,8 @@ async def test_get_pull_request_commits():
             25,
         )
 
-        client.get.assert_awaited_once_with(
-            "/repos/python/cpython/pulls/25/commits?per_page=100",
+        client.get_all.assert_awaited_once_with(
+            "/repos/python/cpython/pulls/25/commits",
         )
 
 

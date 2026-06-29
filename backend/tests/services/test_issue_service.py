@@ -15,7 +15,7 @@ async def test_list_open_issues():
     ) as MockClient:
         client = MockClient.return_value
 
-        client.get = AsyncMock(
+        client.get_all = AsyncMock(
             return_value=[
                 {
                     "number": 1,
@@ -36,8 +36,8 @@ async def test_list_open_issues():
             },
         ]
 
-        client.get.assert_awaited_once_with(
-            "/repos/python/cpython/issues?state=open&per_page=100"
+        client.get_all.assert_awaited_once_with(
+            "/repos/python/cpython/issues?state=open",
         )
 
 

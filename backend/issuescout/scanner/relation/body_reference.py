@@ -2,6 +2,9 @@ from issuescout.models import (
     Issue,
     PullRequest,
 )
+from issuescout.prediction.reason_builder import (
+    ReasonBuilder,
+)
 
 from .base import RelationAnalyzer
 from .metadata import AnalyzerMetadata
@@ -12,7 +15,7 @@ class BodyReferenceAnalyzer(RelationAnalyzer):
     metadata = AnalyzerMetadata(
         name="body_reference",
         weight=35,
-        description=("Detects issue references inside the PR description."),
+        description="Detects issue references inside the pull request description.",
     )
 
     async def analyze(
@@ -35,12 +38,19 @@ class BodyReferenceAnalyzer(RelationAnalyzer):
             score=score,
             confidence=percentage,
             reason=(
-                "Issue referenced in PR body" if matched else "No issue reference found"
+                ReasonBuilder.body_reference(
+                    issue.number,
+                )
+                if matched
+                else ReasonBuilder.no_match()
             ),
             evidence_type="strong",
-            matched_issue_text=f"#{issue.number}",
+            matched_issue_text=f"Issue #{issue.number}",
             matched_pr_text=pull_request.body,
             details={
                 "matched": matched,
+                "issue_number": issue.number,
+                "pull_request_number": pull_request.number,
+                "body": pull_request.body,
             },
         )

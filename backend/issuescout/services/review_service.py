@@ -11,7 +11,6 @@ class ReviewService:
         repo: str,
         pull_number: int,
     ):
-
         return await self.client.get(
             f"/repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers",
         )

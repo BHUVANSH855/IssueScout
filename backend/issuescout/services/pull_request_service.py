@@ -33,14 +33,16 @@ class PullRequestService:
             endpoint,
         )
 
-        return await self.client.get(endpoint)
+        return await self.client.get(
+            endpoint,
+        )
 
     async def list_open_pull_requests(
         self,
         owner: str,
         repo: str,
     ):
-        endpoint = f"/repos/{owner}/{repo}/pulls?state=open&per_page=100"
+        endpoint = f"/repos/{owner}/{repo}/pulls?state=open"
 
         logger.info(
             "Fetching open pull requests",
@@ -51,7 +53,9 @@ class PullRequestService:
             endpoint,
         )
 
-        return await self.client.get(endpoint)
+        return await self.client.get_all(
+            endpoint,
+        )
 
     async def get_pull_request_files(
         self,
@@ -59,9 +63,9 @@ class PullRequestService:
         repo: str,
         number: int,
     ):
-        endpoint = f"/repos/{owner}/{repo}/pulls/{number}/files?per_page=100"
+        endpoint = f"/repos/{owner}/{repo}/pulls/{number}/files"
 
-        return await self.client.get(
+        return await self.client.get_all(
             endpoint,
         )
 
@@ -71,9 +75,9 @@ class PullRequestService:
         repo: str,
         number: int,
     ):
-        endpoint = f"/repos/{owner}/{repo}/pulls/{number}/commits?per_page=100"
+        endpoint = f"/repos/{owner}/{repo}/pulls/{number}/commits"
 
-        return await self.client.get(
+        return await self.client.get_all(
             endpoint,
         )
 

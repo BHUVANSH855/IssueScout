@@ -16,10 +16,15 @@ class AnalysisPipeline:
         results = []
 
         for analyzer in self.analyzers:
-            result = await analyzer.analyze(
-                context,
-                issue,
-            )
+            try:
+                result = await analyzer.analyze(
+                    context,
+                    issue,
+                )
+            except Exception:
+                # Skip failed analyzers and continue with the remaining ones.
+                continue
+
             results.append(result)
 
         return results

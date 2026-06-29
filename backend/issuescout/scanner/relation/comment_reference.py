@@ -2,6 +2,9 @@ from issuescout.models import (
     Issue,
     PullRequest,
 )
+from issuescout.prediction.reason_builder import (
+    ReasonBuilder,
+)
 
 from .base import RelationAnalyzer
 from .metadata import AnalyzerMetadata
@@ -12,7 +15,7 @@ class CommentReferenceAnalyzer(RelationAnalyzer):
     metadata = AnalyzerMetadata(
         name="comment_reference",
         weight=30,
-        description=("Detects PR numbers mentioned inside issue comments."),
+        description="Detects pull request references inside issue comments.",
     )
 
     async def analyze(
@@ -35,14 +38,21 @@ class CommentReferenceAnalyzer(RelationAnalyzer):
             score=score,
             confidence=percentage,
             reason=(
-                "PR found in issue comments"
+                ReasonBuilder.comment_reference(
+                    issue.number,
+                )
                 if matched
-                else "No comment reference found"
+                else ReasonBuilder.no_match()
             ),
             evidence_type="strong",
-            matched_issue_text=f"PR #{pull_request.number}",
-            matched_pr_text="Issue comments",
+            matched_issue_text=f"Issue #{issue.number}",
+            matched_pr_text=f"PR #{pull_request.number}",
             details={
                 "matched": matched,
+                "issue_number": issue.number,
+                "pull_request_number": pull_request.number,
+                "comment_pull_requests": list(
+                    issue.comment_pull_requests,
+                ),
             },
         )

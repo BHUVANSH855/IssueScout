@@ -155,19 +155,19 @@ class Fetcher:
         repo: str,
     ) -> RepositoryScanContext:
 
-        repository_data = await self.fetch_repository(
-            owner,
-            repo,
-        )
-
-        issues = await self.fetch_open_issues(
-            owner,
-            repo,
-        )
-
-        pull_requests = await self.fetch_open_pull_requests(
-            owner,
-            repo,
+        repository_data, issues, pull_requests = await asyncio.gather(
+            self.fetch_repository(
+                owner,
+                repo,
+            ),
+            self.fetch_open_issues(
+                owner,
+                repo,
+            ),
+            self.fetch_open_pull_requests(
+                owner,
+                repo,
+            ),
         )
 
         repository = Repository(

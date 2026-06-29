@@ -4,6 +4,9 @@ from issuescout.models import (
     Issue,
     PullRequest,
 )
+from issuescout.prediction.reason_builder import (
+    ReasonBuilder,
+)
 
 from .base import RelationAnalyzer
 from .metadata import AnalyzerMetadata
@@ -14,7 +17,7 @@ class BranchSimilarityAnalyzer(RelationAnalyzer):
     metadata = AnalyzerMetadata(
         name="branch_similarity",
         weight=20,
-        description=("Matches issue numbers embedded in branch names."),
+        description="Matches issue numbers embedded in branch names.",
     )
 
     async def analyze(
@@ -25,12 +28,15 @@ class BranchSimilarityAnalyzer(RelationAnalyzer):
 
         branch = pull_request.branch_name.lower()
 
+        issue_number = str(issue.number)
+
         patterns = [
-            rf"\b{issue.number}\b",
-            rf"\bgh[-_/]?{issue.number}\b",
-            rf"\bissue[-_/]?{issue.number}\b",
-            rf"\bfix[-_/]?{issue.number}\b",
-            rf"\bbug[-_/]?{issue.number}\b",
+            rf"(^|[/_-]){issue_number}($|[/_-])",
+            rf"(^|[/_-])gh[-_/]?{issue_number}($|[/_-])",
+            rf"(^|[/_-])issue[-_/]?{issue_number}($|[/_-])",
+            rf"(^|[/_-])fix[-_/]?{issue_number}($|[/_-])",
+            rf"(^|[/_-])bug[-_/]?{issue_number}($|[/_-])",
+            rf"(^|[/_-])cpython[-_/]?{issue_number}($|[/_-])",
         ]
 
         matched = any(
@@ -53,11 +59,23 @@ class BranchSimilarityAnalyzer(RelationAnalyzer):
             analyzer="branch_similarity",
             score=score,
             confidence=percentage,
-            reason=(f"Branch similarity: {percentage}%"),
+            reason=(
+                ReasonBuilder.branch_match(
+                    pull_request.branch_name,
+                    issue.number,
+                )
+                if matched
+                else ReasonBuilder.branch_no_match(
+                    pull_request.branch_name,
+                )
+            ),
             evidence_type="strong",
-            matched_issue_text=str(issue.number),
+            matched_issue_text=issue_number,
             matched_pr_text=pull_request.branch_name,
             details={
                 "matched": matched,
+                "branch_name": pull_request.branch_name,
+                "issue_number": issue.number,
+                "patterns_checked": patterns,
             },
         )

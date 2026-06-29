@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 
 from issuescout.models.explanation import (
-    ExplanationItem,
+    PredictionExplanation,
 )
 from issuescout.models.pull_request import (
     PullRequest,
@@ -63,6 +63,4 @@ class PredictionResult(BaseModel):
         default_factory=list,
     )
 
-    explanation: list[ExplanationItem] = Field(
-        default_factory=list,
-    )
+    explanation: PredictionExplanation | None = None

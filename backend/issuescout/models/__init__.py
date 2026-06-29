@@ -3,6 +3,10 @@ from .analysis import (
     PredictionResult,
     RelationPrediction,
 )
+from .explanation import (
+    ExplanationItem,
+    PredictionExplanation,
+)
 from .issue import Issue
 from .pull_request import PullRequest
 from .repository import Repository
@@ -16,6 +20,8 @@ __all__ = [
     "AnalysisResult",
     "PredictionResult",
     "RelationPrediction",
+    "ExplanationItem",
+    "PredictionExplanation",
     "Issue",
     "PullRequest",
     "Repository",

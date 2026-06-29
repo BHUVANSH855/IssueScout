@@ -8,6 +8,8 @@ from .base import BaseAnalyzer
 
 
 class LinkedPRAnalyzer(BaseAnalyzer):
+    SCORE = 30
+
     async def analyze(
         self,
         context: RepositoryScanContext,
@@ -29,6 +31,6 @@ class LinkedPRAnalyzer(BaseAnalyzer):
         return AnalysisResult(
             analyzer="linked_pr",
             passed=True,
-            score=30,
+            score=self.SCORE,
             reason="No linked pull request",
         )

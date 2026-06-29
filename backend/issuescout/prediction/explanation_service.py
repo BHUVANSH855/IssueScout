@@ -9,8 +9,7 @@ from issuescout.models.explanation import (
 
 class ExplanationService:
     """
-    Converts analyzer results into structured
-    explanations for the UI and API.
+    Extracts positive evidence from a relation prediction.
     """
 
     def build(

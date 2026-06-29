@@ -1,8 +1,11 @@
+from __future__ import annotations
+
+import asyncio
+
 from .config import (
     MAX_STRONG_EVIDENCE_SCORE,
     MAX_SUPPORTING_EVIDENCE_SCORE,
 )
-
 from .result import RelationResult
 
 
@@ -38,25 +41,29 @@ class RelationEngine:
         pull_request,
     ):
 
-        results = []
+        results: list[RelationResult] = await asyncio.gather(
+            *[
+                analyzer.analyze(
+                    issue,
+                    pull_request,
+                )
+                for analyzer in self.analyzers
+            ]
+        )
 
         strong_score = 0
-
         supporting_score = 0
 
-        for analyzer in self.analyzers:
-            result: RelationResult = await analyzer.analyze(
-                issue,
-                pull_request,
+        for result in results:
+            score = max(
+                result.score,
+                0,
             )
 
-            results.append(result)
-
             if result.evidence_type == "strong":
-                strong_score += result.score
-
+                strong_score += score
             else:
-                supporting_score += result.score
+                supporting_score += score
 
         strong_score = min(
             strong_score,
