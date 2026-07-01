@@ -1,11 +1,16 @@
 from __future__ import annotations
 
-from issuescout.evaluation.benchmark.suite import BenchmarkSuite
+from issuescout.evaluation.benchmark import (
+    BenchmarkSuite,
+    DEFAULT_BENCHMARK,
+)
 
 
 def benchmark() -> BenchmarkSuite:
     """
-    Create a benchmark suite.
+    Return the default benchmark suite.
+
+    Future CLI options may allow selecting custom benchmark suites.
     """
 
-    return BenchmarkSuite()
+    return DEFAULT_BENCHMARK

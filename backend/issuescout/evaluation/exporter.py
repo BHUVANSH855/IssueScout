@@ -18,7 +18,10 @@ class EvaluationExporter:
         output_file: str | Path,
     ) -> None:
         output_path = Path(output_file)
-        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.parent.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
 
         with output_path.open(
             "w",
@@ -41,12 +44,14 @@ class EvaluationExporter:
             )
 
             for record in evaluation.records:
+                ground_truth = record.ground_truth
+
                 for prediction in record.predictions:
                     writer.writerow(
                         [
-                            record.repository,
-                            record.issue_number,
-                            record.actual_pull_request,
+                            evaluation.full_name,
+                            ground_truth.issue_number,
+                            ground_truth.actual_pull_request,
                             prediction.pull_request_number,
                             prediction.rank,
                             prediction.score,
@@ -61,18 +66,26 @@ class EvaluationExporter:
         output_file: str | Path,
     ) -> None:
         output_path = Path(output_file)
-        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.parent.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
 
         data = {
-            "repository": evaluation.repository,
+            "repository": evaluation.full_name,
             "records": [],
         }
 
         for record in evaluation.records:
+            ground_truth = record.ground_truth
+
             data["records"].append(
                 {
-                    "issue_number": record.issue_number,
-                    "actual_pull_request": record.actual_pull_request,
+                    "issue_number": ground_truth.issue_number,
+                    "issue_title": ground_truth.issue_title,
+                    "issue_state": ground_truth.issue_state,
+                    "actual_pull_request": ground_truth.actual_pull_request,
+                    "linkage_method": ground_truth.linkage_method,
                     "predictions": [
                         {
                             "pull_request_number": prediction.pull_request_number,

@@ -6,9 +6,7 @@ from issuescout.evaluation.metrics import (
     EvaluationMetrics,
     calculate_metrics,
 )
-from issuescout.evaluation.models import (
-    RepositoryEvaluation,
-)
+from issuescout.evaluation.models import RepositoryEvaluation
 
 
 @dataclass(slots=True)
@@ -34,10 +32,11 @@ class Evaluator:
     """
     Orchestrates evaluation of repository prediction results.
 
-    Responsibilities:
-        - Calculate evaluation metrics
-        - Produce an evaluation summary
-        - Provide a single entry point for future benchmark extensions
+    Responsibilities
+    ----------------
+    - Calculate evaluation metrics
+    - Produce repository summaries
+    - Aggregate metrics across repositories
     """
 
     def evaluate(
@@ -49,7 +48,7 @@ class Evaluator:
         )
 
         return EvaluationSummary(
-            repository=evaluation.repository,
+            repository=evaluation.full_name,
             metrics=metrics,
         )
 
@@ -57,12 +56,7 @@ class Evaluator:
         self,
         evaluations: list[RepositoryEvaluation],
     ) -> list[EvaluationSummary]:
-        return [
-            self.evaluate(
-                evaluation,
-            )
-            for evaluation in evaluations
-        ]
+        return [self.evaluate(evaluation) for evaluation in evaluations]
 
     def aggregate(
         self,
