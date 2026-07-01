@@ -3,11 +3,7 @@ import pytest
 from issuescout.evaluation.collector.collector import GroundTruthCollector
 
 
-def test_ground_truth_collector_base():
+def test_ground_truth_collector_is_abstract():
 
-    collector = GroundTruthCollector()
-
-    with pytest.raises(
-        NotImplementedError,
-    ):
-        collector.collect()
+    with pytest.raises(TypeError):
+        GroundTruthCollector()
