@@ -1,52 +1,46 @@
 from __future__ import annotations
 
-from issuescout.evaluation.comparison.comparator import EvaluationComparator
 from issuescout.evaluation.comparison.result import ComparisonResult
-from issuescout.evaluation.metrics.accuracy import AccuracyMetric
-from issuescout.evaluation.metrics.summary import EvaluationSummary
+from issuescout.evaluation.metrics.summary import (
+    EvaluationSummary,
+    EvaluationSummaryMetric,
+)
 
 
 class EvaluationPipeline:
     """
     High-level orchestration for IssueScout evaluation.
 
-    The pipeline coordinates the comparison stage and the metric
-    computation stage while keeping both independent.
+    The pipeline delegates metric computation to
+    EvaluationSummaryMetric so that all benchmark metrics
+    are computed in a single place.
 
     Workflow
 
         Predictions
               │
               ▼
-        Comparator
-              │
-              ▼
       Comparison Results
               │
               ▼
-      Evaluation Metrics
+      EvaluationSummaryMetric
               │
               ▼
-      Evaluation Summary
+      EvaluationSummary
     """
 
     def __init__(self) -> None:
-        self.comparator = EvaluationComparator()
-        self.accuracy_metric = AccuracyMetric()
+        self._summary_metric = EvaluationSummaryMetric()
 
     def summarize(
         self,
         comparisons: list[ComparisonResult],
     ) -> EvaluationSummary:
         """
-        Compute evaluation metrics for a collection of comparison results.
+        Compute all evaluation metrics for a collection
+        of comparison results.
         """
 
-        accuracy = self.accuracy_metric.compute(
+        return self._summary_metric.compute(
             comparisons,
-        )
-
-        return EvaluationSummary(
-            issue_count=len(comparisons),
-            accuracy=accuracy,
         )

@@ -13,6 +13,11 @@ class Settings(BaseSettings):
     DEFAULT_OWNER: str = "python"
     DEFAULT_REPOSITORY: str = "cpython"
 
+    # CORS configuration
+    ALLOWED_ORIGINS: list[str] = [
+        "http://localhost:5173",
+    ]
+
     # HTTP client configuration
     REQUEST_TIMEOUT: int = 30
     MAX_PAGE_SIZE: int = 100

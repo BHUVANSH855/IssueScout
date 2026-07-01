@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from datetime import timedelta
+
 from issuescout.models import (
     Issue,
     PullRequest,
@@ -13,11 +15,17 @@ class CandidateGenerator:
     """
     Generates a shortlist of candidate pull requests for an issue.
 
-    This reduces the number of PRs that must be analyzed by the
+    The goal is to reduce the number of PRs that must be analyzed by the
     relation engine while keeping likely matches.
+
+    The creation date acts as a filtering gate rather than a positive
+    matching signal. PRs created far away from the issue creation date
+    are ignored before any heuristic matching is performed.
     """
 
-    TITLE_SIMILARITY_THRESHOLD = 30
+    TITLE_SIMILARITY_THRESHOLD = 45
+
+    CANDIDATE_WINDOW = timedelta(days=90)
 
     def generate(
         self,
@@ -38,11 +46,37 @@ class CandidateGenerator:
 
         return candidates
 
+    def _within_candidate_window(
+        self,
+        issue: Issue,
+        pull_request: PullRequest,
+    ) -> bool:
+        """
+        Reject PRs created too far away from the issue.
+
+        If timestamps are unavailable, do not reject the candidate.
+        """
+
+        if issue.created_at is None or pull_request.created_at is None:
+            return True
+
+        if pull_request.created_at < issue.created_at:
+            return False
+
+        return (pull_request.created_at - issue.created_at) <= self.CANDIDATE_WINDOW
+
     def _is_candidate(
         self,
         issue: Issue,
         pull_request: PullRequest,
     ) -> bool:
+
+        # First filter by creation time.
+        if not self._within_candidate_window(
+            issue,
+            pull_request,
+        ):
+            return False
 
         # Same author
         if issue.author and issue.author == pull_request.author:
@@ -64,14 +98,6 @@ class CandidateGenerator:
 
         # Branch name contains issue number
         if str(issue.number) in pull_request.branch_name:
-            return True
-
-        # PR created after issue
-        if (
-            issue.created_at
-            and pull_request.created_at
-            and pull_request.created_at >= issue.created_at
-        ):
             return True
 
         # Shared labels
